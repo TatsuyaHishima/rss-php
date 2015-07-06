@@ -1,0 +1,58 @@
+/***********************************************
+
+ RSS
+
+************************************************/
+
+.RSS__head {
+    font-size: 30px;
+}
+
+.RSS__li {
+    font-size: 12px;
+    margin-top: 15px;
+    position: relative;
+    width: 100%;
+}
+
+.RSS__li:first-child {
+    margin-top: 10px;
+}
+
+.RSS__li__img {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    float: left;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.RSS__li__img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.RSS__li__detail {
+    width: 65%;
+    float: left;
+    padding-left: 30px;
+    padding-top: 30px;
+}
+
+.RSS__li__detail__link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-indent: -999px;
+}
+
+.RSS__li__detail__link:hover {
+    background-color: #FFF;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
