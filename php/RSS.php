@@ -67,11 +67,12 @@
         $link = $item->link;    //リンク
         $description = $item->description;  //詳細
 
-        $img_url = get_img_url_ameblo($link, "./img/no_images.jpg"); // 画像URLの取得、無ければno_image.jpg
-        $img_data = file_get_contents($img_url); // 画像データをimg_dataに保存
+        $img_url = get_img_url_ameblo($link, "./img/no_image.jpg"); // 画像URLの取得、無ければno_image.jpg
         $img_name = basename($img_url); // img_nameに画像の名前を保存（hogehoge.png）
-        file_put_contents('./img/blog/' . $img_name, $img_data); // img/blog/以下に取得した画像ファイルを保存
-
+        if (!file_exists("./img/blog/". $img_name)) { // ファイルがまだ保存されていない場合
+            $img_data = file_get_contents($img_url); // 画像データをimg_dataに保存
+            file_put_contents('./img/blog/' . $img_name, $img_data); // img/blog/以下に取得した画像ファイルを保存
+        }
         //日付の取得(UNIX TIMESTAMP)
         if (isset($item->pubDate) && !empty($item->pubDate)){
             $timestamp = strtotime($item->pubDate);
