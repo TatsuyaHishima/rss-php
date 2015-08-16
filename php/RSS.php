@@ -1,6 +1,6 @@
 <?php
 
-    // ライブラリの読み込み
+    //ライブラリの読み込み
     require_once "php/Feed.php";
 
     // htmlspecialcharsをヒアドキュメント内で使えるようにするためのクラス
@@ -26,7 +26,7 @@
             $content = $content->src;
             $imgurl[] = $content;
         }
-        // 不要な画像の排除
+        //不要な画像の排除
         foreach ($imgurl as $value) {
             if ( !stristr($value , 'stat.ameba.jp/blog/ucs/img') and !stristr($value , 'emoji.ameba.jp') ) {
                 $img_url_list[] = $value;
@@ -37,25 +37,21 @@
         if ($img_url_list[0] == false) {
             $img_url_list[0] = $noimage_path;
         }
-
+        
         return $img_url_list[0];
     }
 
     // hack here
     // 取得するフィードのURLを指定
-    $url = "http://feedblog.ameba.jp/rss/ameblo/ebihara-eri/rss20.xml";
+    $url = "http://feedblog.ameba.jp/rss/ameblo/ebizo-ichikawa/rss20.xml";
 
     // hack here
-    // feedの読み込み数
+    //feedの読み込み数
     $MAX_feed = 3;
-
-    // hack here
-    // 画像が無かった場合に表示する画像のパス
-    $no_image_path = "./img/no_image.jpg";
 
     $feed_count = 0; // 初期化
 
-    // RSSを読み込む
+    //RSSを読み込む
     $rss = Feed::loadRss($url);
 
     echo '<ul>' . "\n";
@@ -66,13 +62,17 @@
         }
         $feed_count++;
 
-        // 各エントリーの処理
-        $title = $item->title;  // タイトル
-        $link = $item->link;    // リンク
-        $description = $item->description;  // 詳細
-        $img_url = get_img_url_ameblo($link, $no_image_path);
+        //各エントリーの処理
+        $title = $item->title;  //タイトル
+        $link = $item->link;    //リンク
+        $description = $item->description;  //詳細
 
-        // 日付の取得(UNIX TIMESTAMP)
+        $img_url = get_img_url_ameblo($link, "./img/no_images.jpg"); // 画像URLの取得、無ければno_image.jpg
+        $img_data = file_get_contents($img_url); // 画像データをimg_dataに保存
+        $img_name = basename($img_url); // img_nameに画像の名前を保存（hogehoge.png）
+        file_put_contents('./img/blog/' . $img_name, $img_data); // img/blog/以下に取得した画像ファイルを保存
+
+        //日付の取得(UNIX TIMESTAMP)
         if (isset($item->pubDate) && !empty($item->pubDate)){
             $timestamp = strtotime($item->pubDate);
         }
@@ -92,11 +92,11 @@
             $timestamp = time();
         }
 
-        // 表示
+        //表示
         echo <<< EOP
         <li class="RSS__li clearfix">
             <div class="RSS__li__img">
-                <img src="$img_url">
+                <img src="./img/blog/{$hsc->enc(htmlspecialchars($img_name))}">
             </div>
             <div class="RSS__li__detail">
                 <h5 class="RSS__li__detail__title">{$hsc->enc(htmlspecialchars($title))}</h5>
