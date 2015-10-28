@@ -46,8 +46,16 @@
     $url = "http://feedblog.ameba.jp/rss/ameblo/ebizo-ichikawa/rss20.xml";
 
     // hack here
-    //feedの読み込み数
+    // feedの読み込み数
     $MAX_feed = 3;
+
+    // hack here
+    // 画像フォルダへのパス
+    $img_path = "./img/";
+
+    // hack here
+    // RSS画像を保存するフォルダへのパス
+    $img_rss_path = "./img/rss/";
 
     $feed_count = 0; // 初期化
 
@@ -67,11 +75,11 @@
         $link = $item->link;    //リンク
         $description = $item->description;  //詳細
 
-        $img_url = get_img_url_ameblo($link, "./img/no_image.jpg"); // 画像URLの取得、無ければno_image.jpg
+        $img_url = get_img_url_ameblo($link, $img_path . "no_image.jpg"); // 画像URLの取得、無ければno_image.jpg
         $img_name = basename($img_url); // img_nameに画像の名前を保存（hogehoge.png）
-        if (!file_exists("./img/blog/". $img_name)) { // ファイルがまだ保存されていない場合
+        if (!file_exists($img_rss_path . $img_name)) { // ファイルがまだ保存されていない場合
             $img_data = file_get_contents($img_url); // 画像データをimg_dataに保存
-            file_put_contents('./img/blog/' . $img_name, $img_data); // img/blog/以下に取得した画像ファイルを保存
+            file_put_contents($img_rss_path . $img_name, $img_data); // img/blog/以下に取得した画像ファイルを保存
         }
         //日付の取得(UNIX TIMESTAMP)
         if (isset($item->pubDate) && !empty($item->pubDate)){
@@ -97,7 +105,7 @@
         echo <<< EOP
         <li class="RSS__li clearfix">
             <div class="RSS__li__img">
-                <img src="./img/blog/{$hsc->enc(htmlspecialchars($img_name))}">
+                <img src="{$hsc->enc(htmlspecialchars($img_rss_path))}{$hsc->enc(htmlspecialchars($img_name))}">
             </div>
             <div class="RSS__li__detail">
                 <h5 class="RSS__li__detail__title">{$hsc->enc(htmlspecialchars($title))}</h5>
