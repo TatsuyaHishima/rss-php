@@ -79,7 +79,7 @@
         $img_name = basename($img_url); // img_nameに画像の名前を保存（hogehoge.png）
         if (!file_exists($img_rss_path . $img_name)) { // ファイルがまだ保存されていない場合
             $img_data = file_get_contents($img_url); // 画像データをimg_dataに保存
-            file_put_contents($img_rss_path . $img_name, $img_data); // img/blog/以下に取得した画像ファイルを保存
+            file_put_contents($img_rss_path . $img_name, $img_data); // $img_rss_path以下に取得した画像ファイルを保存
         }
         //日付の取得(UNIX TIMESTAMP)
         if (isset($item->pubDate) && !empty($item->pubDate)){
